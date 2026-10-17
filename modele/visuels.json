@@ -1,0 +1,42 @@
+{
+  "_aide": "Copier à la racine du projet, remplir, puis : python3 ~/.claude/skills/fiches-stores/scripts/rendre_visuels.py visuels.json. Chemins relatifs à ce fichier. Dans les titres, <em>mot</em> met le mot dans la couleur d'accent et <br> force un retour à la ligne. Autocollants : x en % de la largeur, y en % de la hauteur, angle en degrés.",
+  "nom": "MONAPP",
+  "sortie": "store",
+  "icone": "assets/images/icon.png",
+  "visuel": "store/sources/mascotte.png",
+  "visuel_plein": false,
+  "ratio_ecran": "1320 / 2868",
+  "couleurs": { "fond": "#FFF3D6", "texte": "#16120E", "accent": "#FF4A1C", "partenaire": "#FFC93C" },
+  "polices": { "titre": "Bricolage Grotesque", "texte": "DM Sans" },
+  "langues": {
+    "fr": {
+      "banniere": {
+        "accroche": "La promesse de l'app en une phrase.",
+        "pastille": "Gratuit",
+        "bulles": [{ "texte": "Wow !" }, { "texte": "Encore !", "fond": "#FF4A1C" }]
+      },
+      "captures": [
+        {
+          "ecran": "store/captures-brutes/fr/1.png",
+          "etiquette": "Le moment fort",
+          "titre": "Le titre avec <em>un mot fort</em>",
+          "sous": "Une phrase qui explique.",
+          "fond": "#FFF3D6",
+          "autocollants": [{ "texte": "Ouah", "x": 60, "y": 33, "angle": 9 }]
+        }
+      ]
+    },
+    "en": {
+      "banniere": { "accroche": "The app's promise in one line.", "pastille": "Free", "bulles": [{ "texte": "Wow!" }] },
+      "captures": [
+        {
+          "ecran": "store/captures-brutes/en/1.png",
+          "etiquette": "The big moment",
+          "titre": "A title with <em>a strong word</em>",
+          "sous": "One line that explains.",
+          "autocollants": [{ "texte": "Whoa", "x": 60, "y": 33, "angle": 9 }]
+        }
+      ]
+    }
+  }
+}
