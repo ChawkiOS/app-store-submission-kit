@@ -1,4 +1,4 @@
-# fiches-stores
+# App Store & Google Play Submission Kit (`app-store-submission-kit`)
 
 An agent skill (open `SKILL.md` format: Claude Code, Codex, Copilot, Cursor and other agents) that prepares **everything you need to submit an app to the App Store and Google Play**, starting from your app's specification and mockups:
 
@@ -42,27 +42,27 @@ your-project/
 
 ## Installation
 
-Put the `fiches-stores` folder (the one containing `SKILL.md`) in your agent's skills folder:
+Put the `app-store-submission-kit` folder (the one containing `SKILL.md`) in your agent's skills folder:
 
 | Agent | User level (all projects) | Project level |
 | --- | --- | --- |
-| Claude Code | `~/.claude/skills/fiches-stores` | `.claude/skills/fiches-stores` |
+| Claude Code | `~/.claude/skills/app-store-submission-kit` | `.claude/skills/app-store-submission-kit` |
 | Other agents | see your agent's documentation for its skills folder | idem |
 
 With git:
 
 ```bash
-git clone https://github.com/ChawkiOS/fiches-stores.git ~/.claude/skills/fiches-stores
+git clone https://github.com/ChawkiOS/fiches-stores.git ~/.claude/skills/app-store-submission-kit
 ```
 
-Then start a new session. The skill shows up as `fiches-stores`. To update it later, run `git pull` in that folder.
+Then start a new session. The skill shows up as `app-store-submission-kit`. To update it later, run `git pull` in that folder.
 
 ## Usage
 
 In your app's project, ask Claude Code in plain words, or call the skill directly:
 
 ```
-/fiches-stores
+/app-store-submission-kit
 ```
 
 ```

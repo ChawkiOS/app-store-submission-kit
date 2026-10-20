@@ -1,5 +1,5 @@
 ---
-name: fiches-stores
+name: app-store-submission-kit
 description: Use when the user asks to prepare, write or fill an App Store / Google Play listing, store screenshots, feature graphic, description, keywords, metadata, age rating, privacy or data safety answers, review notes, TestFlight or closed testing, or "la fiche store", "les visuels des stores", "préparer la soumission". Prepares EVERYTHING needed to publish a mobile app built with any technology (native, React Native, Flutter…) on both stores from a spec and mockups — listing texts in the chosen languages (name, subtitle, descriptions, keywords, promotional text, release notes), categories and tags, URLs, answers to every questionnaire (Apple age rating and IARC, Apple privacy, Google data safety, app content, rights, encryption), review notes, internal and closed testing, and visuals rendered at exact sizes in each language (iPhone and Android screenshots, Apple header and search artwork, Google feature graphic and icon), in a verified STORE.md and store/ folder.
 ---
 
@@ -14,7 +14,7 @@ The user should never have to think in front of a form or open a design tool.
 
 Works with any mobile technology: native iOS and Android, React Native (CLI or Expo), Flutter, Kotlin Multiplatform, Ionic / Capacitor, Cordova, NativeScript, .NET MAUI, Unity, Godot…
 
-In the commands below, `<skill-dir>` is the folder containing this SKILL.md (for example `~/.claude/skills/fiches-stores` in Claude Code; the location depends on the agent).
+In the commands below, `<skill-dir>` is the folder containing this SKILL.md (for example `~/.claude/skills/app-store-submission-kit` in Claude Code; the location depends on the agent).
 
 References (read the one for the current step):
 
