@@ -1,5 +1,5 @@
 {
-  "_help": "Copy to the project root, fill in, then: python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json. Paths are relative to this file. In titles, <em>word</em> puts the word in the accent color and <br> forces a line break. Stickers: x in % of the width, y in % of the height, angle in degrees.",
+  "_help": "Copy to the project root, fill in, then: python3 <skill-dir>/scripts/render_visuals.py visuals.json. Paths are relative to this file. In titles, <em>word</em> puts the word in the accent color and <br> forces a line break. Stickers: x in % of the width, y in % of the height, angle in degrees.",
   "name": "MYAPP",
   "output": "store",
   "icon": "assets/images/icon.png",

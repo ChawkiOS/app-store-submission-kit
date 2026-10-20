@@ -4,7 +4,9 @@
 Usage: python3 render_visuals.py visuals.json [--lang en] [--only screenshots|banners|icon]
 
 Paths in visuals.json are relative to the folder containing that file (usually the project root).
-Commented template: ../template/visuals.json. Rendered with headless Chrome (Google Fonts: Internet required).
+Commented template: ../template/visuals.json. Rendered with headless Chrome or Chromium (set CHROME to its path if it is not found).
+Network: the HTML templates load fonts from Google Fonts; nothing else is downloaded or sent.
+The script only writes inside the output folder.
 
 Files produced (in "output", store/ by default):
   <lang>/ios/screenshots-6.9/<n>.png        1320 × 2868  (Apple, iPhone 6.9" tab)
@@ -39,10 +41,19 @@ BANNERS = [
 
 
 def chrome() -> str:
-    for c in ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', shutil.which('google-chrome') or '', shutil.which('chromium') or '', shutil.which('chromium-browser') or '']:
+    # CHROME overrides; otherwise the usual macOS, Linux and Windows locations.
+    candidates = [os.environ.get('CHROME', ''),
+                  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                  '/Applications/Chromium.app/Contents/MacOS/Chromium',
+                  shutil.which('google-chrome') or '', shutil.which('google-chrome-stable') or '',
+                  shutil.which('chromium') or '', shutil.which('chromium-browser') or '', shutil.which('chrome') or '',
+                  os.path.expandvars(r'%ProgramFiles%\Google\Chrome\Application\chrome.exe'),
+                  os.path.expandvars(r'%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe'),
+                  os.path.expandvars(r'%LocalAppData%\Google\Chrome\Application\chrome.exe')]
+    for c in candidates:
         if c and os.path.exists(c):
             return c
-    sys.exit('Google Chrome not found.')
+    sys.exit('Google Chrome or Chromium not found: install it or set the CHROME environment variable to its path.')
 
 
 def png_size(path: Path):

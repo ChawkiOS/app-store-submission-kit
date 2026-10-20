@@ -1,6 +1,6 @@
 ---
 name: fiches-stores
-description: Prepares EVERYTHING needed to publish a mobile app, built with any technology (native, React Native, Flutter…), on the App Store and Google Play from a spec and mockups — listing texts in the chosen languages (name, subtitle, descriptions, keywords, promotional text, release notes), categories and tags, URLs, answers to every questionnaire (Apple age rating and IARC, Apple privacy, Google data safety, app content, rights, encryption), review notes, internal and closed testing, and visuals rendered at exact sizes in each language (iPhone and Android screenshots, Apple header and search artwork, Google feature graphic and icon), in a verified STORE.md and store/ folder. Use when the user asks to prepare, write or fill an App Store / Google Play listing, store screenshots, feature graphic, description, keywords, metadata, age rating, privacy or data safety answers, review notes, TestFlight or closed testing, or "la fiche store", "les fiches des stores", "les visuels des stores", "préparer la soumission".
+description: Use when the user asks to prepare, write or fill an App Store / Google Play listing, store screenshots, feature graphic, description, keywords, metadata, age rating, privacy or data safety answers, review notes, TestFlight or closed testing, or "la fiche store", "les visuels des stores", "préparer la soumission". Prepares EVERYTHING needed to publish a mobile app built with any technology (native, React Native, Flutter…) on both stores from a spec and mockups — listing texts in the chosen languages (name, subtitle, descriptions, keywords, promotional text, release notes), categories and tags, URLs, answers to every questionnaire (Apple age rating and IARC, Apple privacy, Google data safety, app content, rights, encryption), review notes, internal and closed testing, and visuals rendered at exact sizes in each language (iPhone and Android screenshots, Apple header and search artwork, Google feature graphic and icon), in a verified STORE.md and store/ folder.
 ---
 
 # App Store and Google Play listings and visuals
@@ -14,6 +14,8 @@ The user should never have to think in front of a form or open a design tool.
 
 Works with any mobile technology: native iOS and Android, React Native (CLI or Expo), Flutter, Kotlin Multiplatform, Ionic / Capacitor, Cordova, NativeScript, .NET MAUI, Unity, Godot…
 
+In the commands below, `<skill-dir>` is the folder containing this SKILL.md (for example `~/.claude/skills/fiches-stores` in Claude Code; the location depends on the agent).
+
 References (read the one for the current step):
 
 - [references/frameworks.md](references/frameworks.md): per technology, where to find the facts, common settings, how to build and upload.
@@ -22,6 +24,7 @@ References (read the one for the current step):
 - [references/google.md](references/google.md): Play Console, field by field, IARC questionnaire step by step.
 - [references/visuals.md](references/visuals.md): exact sizes and rules for visuals.
 - [template/STORE.md](template/STORE.md) and [template/visuals.json](template/visuals.json): skeletons to fill in.
+- [examples/STORE.example.md](examples/STORE.example.md): a complete, verified STORE.md for a fictional Flutter app, in English and French, to match in depth and tone.
 - `scripts/check_store.py`: character limits and keywords.
 - `scripts/render_visuals.py` (with `visual-templates/`): renders every visual, in every language.
 
@@ -35,8 +38,8 @@ Before writing anything, make sure you have these two answers. If the user alrea
 2. **Where are the mockups or screens?** Accept anything that shows the app:
    - **real screenshots** of the app (best: Apple wants screenshots that show the app as it is);
    - **mockup images** (PNG, JPG, PDF);
-   - an **artifact or HTML page** of mockups (read it with the Artifact tool or open it, then render each screen at 1320 × 2868 with Chrome);
-   - a **Figma** link (use the figma skill to export the screens);
+   - an **artifact or HTML page** of mockups (read it with the agent's artifact or web tools if available, or open it, then render each screen at 1320 × 2868 with Chrome);
+   - a **Figma** link (export the screens with a Figma skill or tool if the agent has one, otherwise ask the user to export them as PNG);
    - otherwise, offer to capture the app on a phone, the iOS Simulator or an Android emulator (in demo mode, in each language; see references/visuals.md).
    If the project does not provide them, also ask for: brand colors and fonts, mascot or logo for the banners.
 
@@ -104,17 +107,19 @@ Answer rules:
 4. **Render**:
 
    ```bash
-   python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json
+   python3 <skill-dir>/scripts/render_visuals.py visuals.json
    ```
 
    Produces for each language: Apple 6.9" and 6.3" screenshots, Google screenshots, Apple header 5244 × 2950 and 3840 × 1646, Apple search artwork 5244 × 2950, Google feature graphic 1024 × 500; plus the Google 512 icon and one `contact-sheet.png` per language. `--lang en` or `--only screenshots|banners|icon` to redo part of it.
-5. **Look at each contact sheet** (Read the image, shrunk with `sips -Z` if it is large): text that overflows or gets cut, a lone word at the end of a title, a sticker hiding important information, contrast. Fix `visuals.json` and redo the affected part until everything is clean.
+5. **Look at each contact sheet** (open the image with the agent's image viewing; shrink it first if it is large, e.g. `sips -Z 1600` on macOS or `magick in.png -resize 1600x1600 out.png`; if the agent cannot view images, ask the user to check the sheets): text that overflows or gets cut, a lone word at the end of a title, a sticker hiding important information, contrast. Fix `visuals.json` and redo the affected part until everything is clean.
+
+   Requirements: Python 3.9+ (standard library only) and Google Chrome or Chromium (set the `CHROME` environment variable if it is not found). The templates load fonts from Google Fonts, so rendering needs Internet access; no other network access is made, and the script only writes inside the output folder.
 6. If the brand does not fit the templates (very different style), copy `visual-templates/` into the project and adapt the HTML; the script passes the same parameters.
 
 ## 5. Check
 
 ```bash
-python3 ~/.claude/skills/fiches-stores/scripts/check_store.py STORE.md
+python3 <skill-dir>/scripts/check_store.py STORE.md
 ```
 
 Fix until "Everything is within limits." Then reread as a reviewer would: does every promise exist in the app? Does every privacy answer match the code and the policy?

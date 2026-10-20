@@ -1,6 +1,6 @@
 # fiches-stores
 
-An agent skill for [Claude Code](https://claude.com/claude-code) that prepares **everything you need to submit an app to the App Store and Google Play**, starting from your app's specification and mockups:
+An agent skill (open `SKILL.md` format: Claude Code, Codex, Copilot, Cursor and other agents) that prepares **everything you need to submit an app to the App Store and Google Play**, starting from your app's specification and mockups:
 
 - **Store listing texts in the languages you choose**: name, subtitle, short and full descriptions, promotional text, keywords, release notes, each one written for its language, not translated word for word.
 - **Answers to every console questionnaire**: categories and tags, Apple age rating, Google IARC content rating (question by question), Apple App Privacy, Google Data safety, target audience, content rights, encryption, ads, advertising ID, financial and health features, and more. Each answer comes with the reason behind it.
@@ -35,28 +35,27 @@ your-project/
 
 ## Requirements
 
-- **[Claude Code](https://claude.com/claude-code)**, or any agent that loads `SKILL.md` skills.
+- **An AI agent that loads `SKILL.md` skills** (the open Agent Skills format): Claude Code, Claude apps, OpenAI Codex, GitHub Copilot, Cursor, Gemini CLI and others. The agent must be able to read and write files and run shell commands; to check the visuals itself, it must also be able to view images.
 - **Python 3.9+** for the two helper scripts (standard library only, nothing to install).
-- **Google Chrome** for rendering the visuals: macOS app, or `google-chrome` / `chromium` on Linux.
-- **An internet connection** while rendering, because fonts are loaded from Google Fonts.
+- **Google Chrome or Chromium** for rendering the visuals (macOS, Linux or Windows; set the `CHROME` environment variable if it is installed somewhere unusual).
+- **An internet connection** while rendering, because the templates load fonts from Google Fonts. Nothing else is downloaded or sent anywhere.
 
 ## Installation
 
-Clone the repository into your skills folder.
+Put the `fiches-stores` folder (the one containing `SKILL.md`) in your agent's skills folder:
 
-**For all your projects (user level):**
+| Agent | User level (all projects) | Project level |
+| --- | --- | --- |
+| Claude Code | `~/.claude/skills/fiches-stores` | `.claude/skills/fiches-stores` |
+| Other agents | see your agent's documentation for its skills folder | idem |
+
+With git:
 
 ```bash
-git clone https://github.com/<you>/fiches-stores.git ~/.claude/skills/fiches-stores
+git clone https://github.com/ChawkiOS/fiches-stores.git ~/.claude/skills/fiches-stores
 ```
 
-**For a single project (shared with your team through the repo):**
-
-```bash
-git clone https://github.com/<you>/fiches-stores.git .claude/skills/fiches-stores
-```
-
-Then start a new Claude Code session. The skill shows up in the skills list as `fiches-stores`. To update it later, run `git pull` in that folder.
+Then start a new session. The skill shows up as `fiches-stores`. To update it later, run `git pull` in that folder.
 
 ## Usage
 
@@ -94,10 +93,12 @@ The skill then works in this order:
 
 ## Using the scripts on their own
 
+`<skill-dir>` is the folder where you installed the skill.
+
 **Check a `STORE.md`** (character limits, Apple keywords):
 
 ```bash
-python3 ~/.claude/skills/fiches-stores/scripts/check_store.py STORE.md
+python3 <skill-dir>/scripts/check_store.py STORE.md
 ```
 
 Fields are recognized by their bold label with a limit, followed by a quote:
@@ -111,9 +112,9 @@ Fields are recognized by their bold label with a limit, followed by a quote:
 **Render all visuals** from a `visuals.json` (start from [`template/visuals.json`](template/visuals.json)):
 
 ```bash
-python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json
-python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json --lang en
-python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json --only screenshots   # or banners, icon
+python3 <skill-dir>/scripts/render_visuals.py visuals.json
+python3 <skill-dir>/scripts/render_visuals.py visuals.json --lang en
+python3 <skill-dir>/scripts/render_visuals.py visuals.json --only screenshots   # or banners, icon
 ```
 
 `visuals.json` in short:
@@ -142,6 +143,7 @@ Paths are relative to `visuals.json`. If your brand needs a very different look,
 | `references/languages.md` | Locale codes for both stores, regional variants, how to adapt texts and keywords |
 | `references/visuals.md` | Exact visual sizes and screenshot rules |
 | `template/STORE.md` | Template of the output file |
+| `examples/STORE.example.md` | A complete, verified example for a fictional Flutter app (English and French) |
 | `template/visuals.json` | Commented example of the visuals config |
 | `visual-templates/` | HTML templates for screenshots and banners |
 | `scripts/check_store.py` | Checks `STORE.md` |

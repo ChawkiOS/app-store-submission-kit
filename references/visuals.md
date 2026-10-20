@@ -42,5 +42,5 @@ Good to know:
   - on an Android device or emulator: `adb exec-out screencap -p > screen.png`; demo mode for a clean status bar: `adb shell settings put global sysui_demo_allowed 1`, then the `com.android.systemui.demo` broadcasts;
   - automatically in each language with fastlane `snapshot` (iOS) / `screengrab` (Android), Flutter `integration_test`, Maestro or Detox.
 - Headless Chrome enforces a window at least 500 px wide: to see a page at phone width, put it in a 375 px `iframe`.
-- Check sizes with `sips -g pixelWidth -g pixelHeight` (the script does it for each file).
+- The script checks the size of every file it renders (on macOS, `sips -g pixelWidth -g pixelHeight` checks any other image).
 - Layout: `store/<lang>/ios/`, `store/<lang>/android/`, `store/android/icon-512.png`, `store/raw-screens/<lang>/`, `visuals.json` at the root.
