@@ -1,0 +1,42 @@
+{
+  "_help": "Copy to the project root, fill in, then: python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json. Paths are relative to this file. In titles, <em>word</em> puts the word in the accent color and <br> forces a line break. Stickers: x in % of the width, y in % of the height, angle in degrees.",
+  "name": "MYAPP",
+  "output": "store",
+  "icon": "assets/images/icon.png",
+  "artwork": "store/sources/mascot.png",
+  "artwork_fill": false,
+  "screen_ratio": "1320 / 2868",
+  "colors": { "background": "#FFF3D6", "text": "#16120E", "accent": "#FF4A1C", "partner": "#FFC93C" },
+  "fonts": { "title": "Bricolage Grotesque", "text": "DM Sans" },
+  "languages": {
+    "en": {
+      "banner": {
+        "tagline": "The app's promise in one line.",
+        "pill": "Free",
+        "bubbles": [{ "text": "Wow!" }, { "text": "Again!", "background": "#FF4A1C" }]
+      },
+      "screenshots": [
+        {
+          "screen": "store/raw-screens/en/1.png",
+          "label": "The big moment",
+          "title": "A title with <em>a strong word</em>",
+          "subtitle": "One line that explains.",
+          "background": "#FFF3D6",
+          "stickers": [{ "text": "Whoa", "x": 60, "y": 33, "angle": 9 }]
+        }
+      ]
+    },
+    "fr": {
+      "banner": { "tagline": "La promesse de l'app en une phrase.", "pill": "Gratuit", "bubbles": [{ "text": "Wow !" }] },
+      "screenshots": [
+        {
+          "screen": "store/raw-screens/fr/1.png",
+          "label": "Le moment fort",
+          "title": "Le titre avec <em>un mot fort</em>",
+          "subtitle": "Une phrase qui explique.",
+          "stickers": [{ "text": "Ouah", "x": 60, "y": 33, "angle": 9 }]
+        }
+      ]
+    }
+  }
+}

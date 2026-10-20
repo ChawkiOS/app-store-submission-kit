@@ -9,28 +9,28 @@ An agent skill for [Claude Code](https://claude.com/claude-code) that prepares *
 
 Everything ends up in one verified `STORE.md` file and a ready-to-upload `store/` folder. You should never have to stare at a console form wondering what to answer, or open a design tool to make a screenshot.
 
-> The skill's instructions and references are written in French (it was built while shipping a French app), but it writes store listings in any language you ask for, and Claude follows the instructions just as well when you talk to it in English.
+> The skill writes store listings in any language you ask for, and Claude follows it just as well when you talk to it in French or any other language.
 
 ## What you get
 
 ```
 your-project/
 ├── STORE.md                    # every field for both consoles, every language, with reasons
-├── visuels.json                # brand + captions per language (re-render anytime)
+├── visuals.json                # brand + captions per language (re-render anytime)
 └── store/
-    ├── captures-brutes/<lang>/ # raw app screens used for the screenshots
-    ├── android/icone-512.png   # Google Play icon
+    ├── raw-screens/<lang>/     # raw app screens used for the screenshots
+    ├── android/icon-512.png    # Google Play icon
     └── <lang>/
-        ├── planche.png         # contact sheet: all visuals for this language
+        ├── contact-sheet.png   # all visuals for this language at a glance
         ├── ios/
-        │   ├── captures-6.9/   # 1320 × 2868 (iPhone 6.9")
-        │   ├── captures-6.3/   # 1206 × 2622 (iPhone 6.3", only if Apple asks)
-        │   ├── entete-5244x2950.png
-        │   ├── entete-3840x1646.png
-        │   └── recherche-5244x2950.png
+        │   ├── screenshots-6.9/   # 1320 × 2868 (iPhone 6.9")
+        │   ├── screenshots-6.3/   # 1206 × 2622 (iPhone 6.3", only if Apple asks)
+        │   ├── header-5244x2950.png
+        │   ├── header-3840x1646.png
+        │   └── search-5244x2950.png
         └── android/
-            ├── captures/       # 1080 × 1920
-            └── banniere-1024x500.png
+            ├── screenshots/       # 1080 × 1920
+            └── feature-graphic-1024x500.png
 ```
 
 ## Requirements
@@ -78,9 +78,9 @@ Prépare les fiches des stores en anglais et en français, avec les visuels.
 The skill then works in this order:
 
 1. **Asks for the languages and the mockups** (unless your request already gives them), plus at most a few missing facts: contact e-mail, publisher name, brand colors… Each question comes with a suggested default.
-2. **Reads your project**: specification, app config (`app.json`, `Info.plist`, `AndroidManifest.xml`), translation files, privacy policy, theme, and the code wherever it answers a questionnaire (ad or analytics SDKs, accounts, data sent to servers, user-generated content).
+2. **Reads your project**, whatever it is built with: specification, app and native config (`Info.plist`, `AndroidManifest.xml`, Gradle, `pubspec.yaml`, `app.json`, `capacitor.config`, `.csproj`, Unity Player Settings…), dependencies, privacy manifests, translation files, privacy policy, theme, and the code wherever it answers a questionnaire (ad or analytics SDKs, accounts, data sent to servers, user-generated content).
 3. **Writes `STORE.md`** from the template, one section per language.
-4. **Produces the visuals.** It gathers one app screen per screenshot and per language, writes `visuels.json`, renders everything, looks at each contact sheet and fixes anything that overflows or reads badly.
+4. **Produces the visuals.** It gathers one app screen per screenshot and per language, writes `visuals.json`, renders everything, looks at each contact sheet and fixes anything that overflows or reads badly.
 5. **Checks everything**: character limits and Apple keyword rules, and consistency between the listing, the code and the privacy policy.
 6. **Stays with you in the consoles**: paste any question from App Store Connect or the Play Console and it answers with the exact value to pick and a one-line reason.
 
@@ -97,7 +97,7 @@ The skill then works in this order:
 **Check a `STORE.md`** (character limits, Apple keywords):
 
 ```bash
-python3 ~/.claude/skills/fiches-stores/scripts/verifier_store.py STORE.md
+python3 ~/.claude/skills/fiches-stores/scripts/check_store.py STORE.md
 ```
 
 Fields are recognized by their bold label with a limit, followed by a quote:
@@ -105,31 +105,31 @@ Fields are recognized by their bold label with a limit, followed by a quote:
 ```markdown
 **App Store subtitle** (30 characters max):
 
-> The hot potato game with friends
+> The hot potato with friends
 ```
 
-**Render all visuals** from a `visuels.json` (start from [`modele/visuels.json`](modele/visuels.json)):
+**Render all visuals** from a `visuals.json` (start from [`template/visuals.json`](template/visuals.json)):
 
 ```bash
-python3 ~/.claude/skills/fiches-stores/scripts/rendre_visuels.py visuels.json
-python3 ~/.claude/skills/fiches-stores/scripts/rendre_visuels.py visuels.json --langue en
-python3 ~/.claude/skills/fiches-stores/scripts/rendre_visuels.py visuels.json --seulement captures   # or bannieres, icone
+python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json
+python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json --lang en
+python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json --only screenshots   # or banners, icon
 ```
 
-`visuels.json` in short:
+`visuals.json` in short:
 
 | Key | Meaning |
 | --- | --- |
-| `nom` | App name shown on the banners |
-| `icone` | App icon (used for the 512 px Google icon, and on banners when there is no `visuel`) |
-| `visuel` | Mascot or logo shown in the banner circle; `visuel_plein: true` to fill the circle |
-| `couleurs` | `fond` (background), `texte`, `accent`, `partenaire` (second brand color) |
-| `polices` | `titre` and `texte`: any Google Fonts family |
-| `ratio_ecran` | Aspect ratio of your raw screens, default `1320 / 2868` |
-| `langues.<code>.banniere` | `accroche` (tagline), `pastille` (pill), `bulles` (up to 2 speech bubbles) |
-| `langues.<code>.captures[]` | `ecran` (raw screen), `etiquette` (label), `titre` (`<em>word</em>` is highlighted), `sous` (subtitle), `fond`, `accent_titre`, `autocollants` (stickers: text, position, angle, color) |
+| `name` | App name shown on the banners |
+| `icon` | App icon (used for the 512 px Google icon, and on banners when there is no `artwork`) |
+| `artwork` | Mascot or logo shown in the banner circle; `artwork_fill: true` to fill the circle |
+| `colors` | `background`, `text`, `accent`, `partner` (second brand color) |
+| `fonts` | `title` and `text`: any Google Fonts family |
+| `screen_ratio` | Aspect ratio of your raw screens, default `1320 / 2868` |
+| `languages.<code>.banner` | `tagline`, `pill`, `bubbles` (up to 2 speech bubbles) |
+| `languages.<code>.screenshots[]` | `screen` (raw screen), `label`, `title` (`<em>word</em>` is highlighted), `subtitle`, `background`, `title_accent`, `stickers` (text, position, angle, color) |
 
-Paths are relative to `visuels.json`. If your brand needs a very different look, copy `modeles-visuels/` into your project and edit the HTML; the script passes the same parameters.
+Paths are relative to `visuals.json`. If your brand needs a very different look, copy `visual-templates/` into your project and edit the HTML; the script passes the same parameters.
 
 ## What's inside
 
@@ -137,20 +137,21 @@ Paths are relative to `visuels.json`. If your brand needs a very different look,
 | --- | --- |
 | `SKILL.md` | The workflow Claude follows |
 | `references/apple.md` | App Store Connect field by field: limits, categories, age rating, App Privacy, review guidelines that cause rejections, review notes template, TestFlight |
-| `references/google.md` | Play Console field by field: listing, categories and tags, App content, IARC walkthrough, Data safety, target audience, testing tracks, service account setup for `eas submit` |
-| `references/langues.md` | Locale codes for both stores, regional variants, how to adapt texts and keywords |
-| `references/visuels.md` | Exact visual sizes and screenshot rules |
-| `modele/STORE.md` | Template of the output file |
-| `modele/visuels.json` | Commented example of the visuals config |
-| `modeles-visuels/` | HTML templates for screenshots and banners |
-| `scripts/verifier_store.py` | Checks `STORE.md` |
-| `scripts/rendre_visuels.py` | Renders every visual in every language |
+| `references/google.md` | Play Console field by field: listing, categories and tags, App content, IARC walkthrough, Data safety, target audience, testing tracks, service account setup for automated uploads |
+| `references/frameworks.md` | Per technology: how to detect it, where to find each fact, common settings (encryption flag, removing permissions, iPad support), build and upload commands |
+| `references/languages.md` | Locale codes for both stores, regional variants, how to adapt texts and keywords |
+| `references/visuals.md` | Exact visual sizes and screenshot rules |
+| `template/STORE.md` | Template of the output file |
+| `template/visuals.json` | Commented example of the visuals config |
+| `visual-templates/` | HTML templates for screenshots and banners |
+| `scripts/check_store.py` | Checks `STORE.md` |
+| `scripts/render_visuals.py` | Renders every visual in every language |
 
 ## Good to know
 
 - **Store rules change often.** The references are dated (October 2026). When a console shows something different, the console wins, and the skill tells you so.
 - **You stay responsible for what you submit.** Read the answers about age rating and privacy before you paste them: they must match what your app really does.
-- **Expo-friendly.** It knows `app.json`, EAS Build and `eas submit`, but works for any iOS or Android project.
+- **Any mobile technology.** Native iOS (Swift, SwiftUI) and Android (Kotlin, Compose), React Native (CLI or Expo), Flutter, Kotlin Multiplatform, Ionic / Capacitor, Cordova, NativeScript, .NET MAUI, Unity, Godot. The skill detects the technology, reads the facts from the right files and gives the matching build and upload commands (Xcode, Gradle, fastlane, EAS, CI).
 - This project is not affiliated with Apple or Google. App Store, App Store Connect, TestFlight, Google Play and Play Console are trademarks of their respective owners.
 
 ## Contributing

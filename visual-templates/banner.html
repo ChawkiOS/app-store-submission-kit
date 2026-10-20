@@ -1,0 +1,88 @@
+<!doctype html>
+<!--
+  Banner: app name, tagline, pill on the left; artwork (mascot, logo or icon) in a disc on the right, with bubbles.
+  Sizes in vh: serves the Google feature graphic (1024 × 500), the Apple header (5244 × 2950 and 3840 × 1646) and the search artwork.
+  Parameters in the URL (rendered by scripts/render_visuals.py):
+    name, tagline, pill, artwork (image), bubbles (JSON: [{"text": "…", "background": "#…"}], 2 at most),
+    background, text, accent, partner, title-font, text-font, variant=accent (accent-colored background), wide (very panoramic formats).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  :root { --background:#FFF3D6; --text:#16120E; --accent:#FF4A1C; --partner:#FFC93C;
+          --title-font:'Bricolage Grotesque'; --text-font:'DM Sans'; }
+  html, body { margin:0; width:100vw; height:100vh; overflow:hidden; }
+  body { background:var(--background); font-family:var(--text-font), sans-serif; color:var(--text);
+         display:flex; align-items:center; justify-content:center; gap:9vh; position:relative; }
+  body::before { content:''; position:absolute; inset:0;
+    background-image:radial-gradient(color-mix(in srgb, var(--text) 10%, transparent) 0.55vh, transparent 0.6vh);
+    background-size:4.2vh 4.2vh; }
+  body.variant-accent { background:var(--accent); }
+  .copy { position:relative; z-index:1; flex:none; }
+  .brand { font-family:var(--title-font), sans-serif; font-weight:800; font-size:21vh; line-height:.9;
+           letter-spacing:-1vh; margin:0; white-space:nowrap; color:var(--text); text-shadow:1.2vh 1.2vh 0 var(--partner); }
+  body.variant-accent .brand { color:var(--background); text-shadow:1.2vh 1.2vh 0 var(--text); }
+  .tagline { font-family:var(--title-font), sans-serif; font-weight:800; font-size:7.4vh; line-height:1.05;
+             margin:4vh 0 0; letter-spacing:-.2vh; max-width:62vh; }
+  body.wide .tagline { max-width:90vh; }
+  .pill { display:inline-block; margin-top:3.6vh; background:var(--text); color:var(--partner); border-radius:99vh;
+          padding:1.6vh 3.2vh; font-weight:700; font-size:3.6vh; letter-spacing:.3vh; text-transform:uppercase; }
+  .pill:empty { display:none; }
+  body.variant-accent .pill { background:var(--background); color:var(--text); }
+  .scene { position:relative; z-index:1; width:74vh; height:74vh; flex:none; }
+  .ring { position:absolute; inset:0; border-radius:50%; border:0.8vh dashed var(--accent); }
+  body.variant-accent .ring { border-color:var(--text); }
+  .disc { position:absolute; inset:7vh; border-radius:50%; background:var(--partner); border:0.8vh solid var(--text);
+          box-shadow:2vh 2vh 0 var(--text); overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  body.variant-accent .disc { background:var(--background); }
+  .disc img { width:78%; height:78%; object-fit:contain; transform:rotate(-8deg); }
+  .disc img.fill { width:100%; height:100%; object-fit:cover; transform:none; }
+  .bubble { position:absolute; font-family:var(--title-font), sans-serif; font-weight:800; background:#fff; color:var(--text);
+            border:0.6vh solid var(--text); border-radius:2.4vh; padding:1vh 2.2vh; font-size:5vh; box-shadow:1vh 1vh 0 var(--text);
+            white-space:nowrap; }
+  .bubble.b1 { top:1vh; right:2vh; transform:rotate(10deg); }
+  .bubble.b2 { bottom:4vh; left:-4vh; transform:rotate(-8deg); }
+</style>
+</head>
+<body>
+  <div class="copy">
+    <h1 class="brand" id="name"></h1>
+    <p class="tagline" id="tagline"></p>
+    <span class="pill" id="pill"></span>
+  </div>
+  <div class="scene">
+    <div class="ring"></div>
+    <div class="disc"><img id="artwork" alt="" /></div>
+    <div id="bubbles"></div>
+  </div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    const root = document.documentElement.style;
+    for (const v of ['background', 'text', 'accent', 'partner']) if (q.get(v)) root.setProperty('--' + v, q.get(v));
+    const fonts = [q.get('title-font') || 'Bricolage Grotesque', q.get('text-font') || 'DM Sans'];
+    root.setProperty('--title-font', `'${fonts[0]}'`);
+    root.setProperty('--text-font', `'${fonts[1]}'`);
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?' + [...new Set(fonts)].map((f) => 'family=' + encodeURIComponent(f) + ':wght@500;700;800').join('&') + '&display=block';
+    document.head.appendChild(link);
+    if (q.get('variant') === 'accent') document.body.classList.add('variant-accent');
+    if (q.has('wide')) document.body.classList.add('wide');
+    document.getElementById('name').textContent = q.get('name') || '';
+    document.getElementById('tagline').textContent = q.get('tagline') || '';
+    document.getElementById('pill').textContent = q.get('pill') || '';
+    const artwork = document.getElementById('artwork');
+    artwork.src = q.get('artwork');
+    // A square icon fills the disc; a cut-out mascot sits inside it.
+    if (q.get('artwork-fill') === '1') artwork.classList.add('fill');
+    JSON.parse(q.get('bubbles') || '[]').slice(0, 2).forEach((b, i) => {
+      const el = document.createElement('div');
+      el.className = `bubble b${i + 1}`;
+      el.textContent = b.text;
+      if (b.background) el.style.background = b.background;
+      document.getElementById('bubbles').appendChild(el);
+    });
+  </script>
+</body>
+</html>

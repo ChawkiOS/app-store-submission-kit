@@ -1,119 +1,126 @@
 ---
 name: fiches-stores
-description: Prépare TOUT ce qu'il faut pour publier une app sur l'App Store (App Store Connect) et Google Play (Play Console) à partir d'une spécification et des maquettes — textes des fiches dans les langues choisies (nom, sous-titre, descriptions, mots-clés, texte promotionnel, notes de version), catégories et tags, URLs, réponses à tous les questionnaires (classification d'âge Apple et IARC, confidentialité Apple, sécurité des données Google, contenu de l'app, droits, chiffrement), notes de review, tests interne et fermé, et les visuels rendus aux tailles exactes dans chaque langue (captures iPhone et Android, en-têtes et visuel de recherche Apple, bannière et icône Google), le tout dans un STORE.md vérifié et un dossier store/. Use when the user asks to prepare, write or fill an App Store / Google Play listing, store screenshots, feature graphic, store description, keywords, metadata, age rating, privacy or data safety answers, review notes, TestFlight or closed testing, or "la fiche store", "les fiches des stores", "les visuels des stores", "préparer la soumission".
+description: Prepares EVERYTHING needed to publish a mobile app, built with any technology (native, React Native, Flutter…), on the App Store and Google Play from a spec and mockups — listing texts in the chosen languages (name, subtitle, descriptions, keywords, promotional text, release notes), categories and tags, URLs, answers to every questionnaire (Apple age rating and IARC, Apple privacy, Google data safety, app content, rights, encryption), review notes, internal and closed testing, and visuals rendered at exact sizes in each language (iPhone and Android screenshots, Apple header and search artwork, Google feature graphic and icon), in a verified STORE.md and store/ folder. Use when the user asks to prepare, write or fill an App Store / Google Play listing, store screenshots, feature graphic, description, keywords, metadata, age rating, privacy or data safety answers, review notes, TestFlight or closed testing, or "la fiche store", "les fiches des stores", "les visuels des stores", "préparer la soumission".
 ---
 
-# Fiches et visuels App Store et Google Play
+# App Store and Google Play listings and visuals
 
-Produit, à partir de la spécification et des maquettes de l'app :
+From the app's specification and mockups, produces:
 
-1. **`STORE.md`** à la racine du projet : chaque champ des deux consoles, dans chaque langue choisie, avec sa réponse prête et sa raison.
-2. **`store/`** : tous les visuels aux tailles exactes, dans chaque langue, prêts à déposer, avec une planche de contrôle par langue.
+1. **`STORE.md`** at the project root: every field of both consoles, in each chosen language, with its ready-to-paste answer and its reason.
+2. **`store/`**: every visual at the exact size, in each language, ready to upload, with one contact sheet per language.
 
-L'utilisateur ne devrait plus avoir à réfléchir devant un formulaire ni ouvrir un outil de design.
+The user should never have to think in front of a form or open a design tool.
 
-Références (lire celle de l'étape en cours) :
+Works with any mobile technology: native iOS and Android, React Native (CLI or Expo), Flutter, Kotlin Multiplatform, Ionic / Capacitor, Cordova, NativeScript, .NET MAUI, Unity, Godot…
 
-- [references/langues.md](references/langues.md) : codes de langue des deux stores, adaptation, variantes régionales.
-- [references/apple.md](references/apple.md) : App Store Connect, champ par champ.
-- [references/google.md](references/google.md) : Play Console, champ par champ, questionnaire IARC pas à pas.
-- [references/visuels.md](references/visuels.md) : tailles exactes et règles des visuels.
-- [modele/STORE.md](modele/STORE.md) et [modele/visuels.json](modele/visuels.json) : squelettes à remplir.
-- `scripts/verifier_store.py` : limites de caractères et mots-clés.
-- `scripts/rendre_visuels.py` (avec `modeles-visuels/`) : rendu de tous les visuels, toutes langues.
+References (read the one for the current step):
 
-Les règles des stores changent. Références à jour d'octobre 2026 ; si la console affiche autre chose, elle a raison : adapter et le signaler.
+- [references/frameworks.md](references/frameworks.md): per technology, where to find the facts, common settings, how to build and upload.
+- [references/languages.md](references/languages.md): language codes for both stores, adaptation, regional variants.
+- [references/apple.md](references/apple.md): App Store Connect, field by field.
+- [references/google.md](references/google.md): Play Console, field by field, IARC questionnaire step by step.
+- [references/visuals.md](references/visuals.md): exact sizes and rules for visuals.
+- [template/STORE.md](template/STORE.md) and [template/visuals.json](template/visuals.json): skeletons to fill in.
+- `scripts/check_store.py`: character limits and keywords.
+- `scripts/render_visuals.py` (with `visual-templates/`): renders every visual, in every language.
 
-## 1. Demander les langues et les maquettes (toujours, en premier)
+Store rules change. References are current as of October 2026; if the console shows something else, the console is right: adapt and say so.
 
-Avant d'écrire quoi que ce soit, s'assurer d'avoir ces deux réponses. Si l'utilisateur les a déjà données dans sa demande (« prépare la fiche en anglais, espagnol et français »), ne pas les redemander.
+## 1. Ask for the languages and the mockups (always, first)
 
-1. **Dans quelles langues préparer les fiches ?** Proposer les langues que l'app contient déjà (fichiers de traduction), et rappeler qu'une fiche dans une langue absente de l'app trompe le joueur (voir references/langues.md). Préciser la variante quand elle compte (espagnol d'Amérique latine ou d'Espagne, portugais du Brésil ou du Portugal) et la **langue principale** de la fiche.
-2. **Où sont les maquettes ou les écrans ?** Accepter tout ce qui montre l'app :
-   - des **captures réelles** de l'app (le mieux : Apple veut des captures qui montrent l'app telle qu'elle est) ;
-   - des **images de maquettes** (PNG, JPG, PDF) ;
-   - un **artefact ou une page HTML** de maquettes (le lire avec l'outil Artifact ou l'ouvrir, puis rendre chaque écran à 1320 × 2868 avec Chrome) ;
-   - un lien **Figma** (utiliser le skill figma pour exporter les écrans) ;
-   - à défaut, proposer de capturer l'app sur un téléphone (en mode démo, dans chaque langue).
-   Demander aussi, si le projet ne les donne pas : couleurs et polices de la marque, mascotte ou logo pour les bannières.
+Before writing anything, make sure you have these two answers. If the user already gave them in the request ("prepare the listing in English, Spanish and French"), do not ask again.
 
-Poser ces questions **en un seul message**, avec les autres faits manquants de l'étape 2 (5 questions au plus en tout, chacune avec une proposition par défaut).
+1. **Which languages should the listings be prepared in?** Suggest the languages the app already contains (translation files), and remind the user that a listing in a language the app does not have misleads users (see references/languages.md). Specify the variant when it matters (Latin American or European Spanish, Brazilian or European Portuguese) and the **primary language** of the listing.
+2. **Where are the mockups or screens?** Accept anything that shows the app:
+   - **real screenshots** of the app (best: Apple wants screenshots that show the app as it is);
+   - **mockup images** (PNG, JPG, PDF);
+   - an **artifact or HTML page** of mockups (read it with the Artifact tool or open it, then render each screen at 1320 × 2868 with Chrome);
+   - a **Figma** link (use the figma skill to export the screens);
+   - otherwise, offer to capture the app on a phone, the iOS Simulator or an Android emulator (in demo mode, in each language; see references/visuals.md).
+   If the project does not provide them, also ask for: brand colors and fonts, mascot or logo for the banners.
 
-## 2. Rassembler les faits
+Ask these questions **in a single message**, together with the other missing facts from step 2 (5 questions at most in total, each with a suggested default).
 
-Lire, dans le projet : la spécification (SPECIFICATION.md, README, docs), la config de l'app (`app.json` / `app.config.*`, `Info.plist`, `AndroidManifest.xml`, `build.gradle`), les fichiers de traduction, le site (confidentialité, CGU), le thème (couleurs, polices), et le code là où il répond à une question.
+## 2. Gather the facts
 
-| Fait | Où le trouver |
+First **detect the technology** the app is built with (references/frameworks.md, "Detecting the technology"); its row in that file says where each fact below lives.
+
+Then read, in the project: the specification (SPECIFICATION.md, README, docs), the app config and native config (`Info.plist`, `AndroidManifest.xml`, Gradle files, and the framework's own config), the dependencies, the privacy manifests, the translation files, the website (privacy, terms), the theme (colors, fonts), and the code wherever it answers a question.
+
+| Fact | Where to find it |
 | --- | --- |
-| Nom, bundle ID iOS, package Android, version | config de l'app |
-| Ce que fait l'app, pour qui, ce qui la rend différente | spécification |
-| Langues disponibles dans l'app | fichiers de traduction |
-| Gratuit ou payant, achats intégrés, abonnements, publicité | spécification, dépendances (SDK pub, RevenueCat, StoreKit, Billing) |
-| Compte : aucun, anonyme, e-mail, connexion Apple/Google | code d'authentification |
-| Données collectées, pourquoi, prestataires (Firebase, Expo, analytics…) | code, politique de confidentialité |
-| Contenu entre utilisateurs (texte libre, photos, chat), blocage, signalement | code, spécification |
-| Âge minimum, public visé | CGU, spécification |
-| Permissions natives réellement demandées | manifeste final, Info.plist |
-| Contenus tiers (sons, polices, images) et licences | assets, spécification |
-| URLs : site, assistance (avec un contact), confidentialité, suppression du compte | site |
-| Contact, éditeur, copyright | site, utilisateur |
-| Comment un examinateur teste l'app seul (démo, mode solo, vidéo) | spécification |
-| Couleurs, polices, logo, mascotte | thème, assets |
+| Technology (native, React Native, Flutter, …) | project files (references/frameworks.md) |
+| Name, iOS bundle ID, Android package, version | app config |
+| Platforms and devices: iPhone only or iPad too, Android phone or tablet | Xcode device family, framework config |
+| What the app does, for whom, what makes it different | specification |
+| Languages available in the app | translation files |
+| Free or paid, in-app purchases, subscriptions, ads | specification, dependencies (ad SDKs, RevenueCat, StoreKit, Play Billing) |
+| Account: none, anonymous, e-mail, Sign in with Apple/Google | authentication code |
+| Data collected, why, providers (Firebase, Supabase, Sentry, analytics, backend…) | code, dependencies, privacy manifests, privacy policy |
+| Content between users (free text, photos, chat), blocking, reporting | code, specification |
+| Minimum age, target audience | terms, specification |
+| Native permissions actually requested | final built manifest and Info.plist (libraries add some) |
+| Third-party content (sounds, fonts, images) and licenses | assets, specification |
+| URLs: website, support (with a contact), privacy, account deletion | website |
+| Contact, publisher, copyright | website, user |
+| How a reviewer can test the app alone (demo, solo mode, video) | specification |
+| Colors, fonts, logo, mascot | theme, assets |
 
-**Ne rien inventer** : un fait introuvable devient une question (étape 1).
+**Never invent anything**: a fact you cannot find becomes a question (step 1).
 
-## 3. Écrire STORE.md
+## 3. Write STORE.md
 
-Partir de [modele/STORE.md](modele/STORE.md). Sections, dans l'ordre où on remplit les consoles :
+Start from [template/STORE.md](template/STORE.md). Sections, in the order the consoles are filled in:
 
-1. **Règles d'écriture** propres à l'app.
-2. **Textes, une section par langue** (langue principale d'abord) : nom App Store, nom Google Play, sous-titre, description courte, texte promotionnel, description complète, mots-clés, notes de version. Chaque langue est **écrite pour elle** (references/langues.md), avec ses propres mots-clés.
-3. **Catégories et tags**.
-4. **URLs et contact**.
-5. **Âge** : questionnaire Apple, IARC pas à pas, public cible.
-6. **Confidentialité** : Apple, puis sécurité des données Google.
-7. **Déclarations** : droits sur le contenu, chiffrement, publicité, accès à l'app, finances, santé, actualités, gouvernement, identifiant publicitaire.
-8. **Review** : notes en anglais, coordonnées, accès Google.
-9. **Tests** : TestFlight, test interne et fermé Google (12 testeurs pendant 14 jours pour un compte personnel récent), instructions aux testeurs dans leurs langues.
-10. **Visuels** : liste des fichiers produits par langue (étape 4).
-11. **Checklist** de soumission.
+1. **Writing rules** specific to the app.
+2. **Texts, one section per language** (primary language first): App Store name, Google Play name, subtitle, short description, promotional text, full description, keywords, release notes. Each language is **written for itself** (references/languages.md), with its own keywords.
+3. **Categories and tags**.
+4. **URLs and contact**.
+5. **Age**: Apple questionnaire, IARC step by step, target audience.
+6. **Privacy**: Apple, then Google data safety.
+7. **Declarations**: content rights, encryption, ads, app access, financial features, health, news, government, advertising ID.
+8. **Review**: notes in English, contact details, Google access.
+9. **Build and testing**: how to build and upload with the app's technology (references/frameworks.md), TestFlight, Google internal and closed testing (12 testers for 14 days for a recent personal account), instructions to testers in their languages.
+10. **Visuals**: list of files produced per language (step 4).
+11. Submission **checklist**.
 
-Règles des textes :
-- Première phrase de la description = l'accroche (seule visible avant « plus »). Puis sections courtes à titre en majuscules, puces, appel à l'action.
-- Concret (ce qu'on fait dans l'app) plutôt qu'adjectifs ; vrai (seulement la version soumise ; « bientôt » seulement dans le texte promotionnel Apple).
-- Mots-clés Apple : 100 caractères, virgules sans espace, sans répéter nom, sous-titre ni catégorie, sans marques tierces.
-- Pas d'emoji dans les textes Apple. Neutre en genre quand la langue le permet.
+Text rules:
+- First sentence of the description = the hook (the only part visible before "more"). Then short sections with uppercase headings, bullets, a call to action.
+- Concrete (what you do in the app) rather than adjectives; true (only the submitted version; "coming soon" only in Apple's promotional text).
+- Apple keywords: 100 characters, commas without spaces, without repeating the name, subtitle or category, no third-party brands.
+- No emoji in Apple texts. Gender-neutral when the language allows it.
 
-Règles des réponses :
-- Chaque réponse donne sa **raison**. Honnête plutôt qu'avantageux (une réponse minimisée fait refuser ou retirer l'app plus tard).
-- Cohérent avec la politique de confidentialité, le code et l'autre store ; signaler toute contradiction.
-- Libellés tels qu'ils apparaissent dans la console (anglais pour la Play Console si elle est en anglais ; dans le doute, les deux).
+Answer rules:
+- Every answer gives its **reason**. Honest rather than flattering (an understated answer gets the app rejected or removed later).
+- Consistent with the privacy policy, the code and the other store; flag any contradiction.
+- Labels as they appear in the console (in the console's language; when in doubt, give both English and the user's language).
 
-## 4. Produire les visuels
+## 4. Produce the visuals
 
-1. **Écrans** : rassembler un écran par capture et par langue dans `store/captures-brutes/<langue>/` (1320 × 2868 de préférence ; une autre taille de téléphone convient, le cadre s'adapte avec `ratio_ecran`). Depuis une maquette HTML : rendre chaque écran avec Chrome sans interface à la taille du téléphone. Retoucher seulement ce qui ne trahit pas l'app (pseudos de test, données de démo).
-2. **Choisir 4 à 6 captures** dans l'ordre du parcours qui donne envie (references/visuels.md), avec pour chacune : étiquette, titre (un mot mis en valeur avec `<em>`), phrase, couleur de fond, un autocollant. Les écrire **dans chaque langue**.
-3. **Remplir `visuels.json`** à la racine du projet à partir de [modele/visuels.json](modele/visuels.json) : nom, icône, mascotte ou logo, couleurs et polices de la marque, et pour chaque langue la bannière (accroche, pastille, 2 bulles) et les captures.
-4. **Rendre** :
+1. **Screens**: gather one screen per screenshot and per language in `store/raw-screens/<lang>/` (1320 × 2868 preferably; another phone size works, the frame adapts with `screen_ratio`). From the running app: capture on a device, simulator or emulator (references/visuals.md). From an HTML mockup: render each screen with headless Chrome at phone size. Only retouch what does not misrepresent the app (test usernames, demo data).
+2. **Pick 4 to 6 screenshots** in the order of the journey that makes people want the app (references/visuals.md), each with: label, title (one word highlighted with `<em>`), sentence, background color, one sticker. Write them **in each language**.
+3. **Fill in `visuals.json`** at the project root from [template/visuals.json](template/visuals.json): name, icon, mascot or logo, brand colors and fonts, and for each language the banner (tagline, pill, 2 bubbles) and the screenshots.
+4. **Render**:
 
    ```bash
-   python3 ~/.claude/skills/fiches-stores/scripts/rendre_visuels.py visuels.json
+   python3 ~/.claude/skills/fiches-stores/scripts/render_visuals.py visuals.json
    ```
 
-   Produit pour chaque langue : captures Apple 6,9 et 6,3 pouces, captures Google, en-tête Apple 5244 × 2950 et 3840 × 1646, visuel de recherche Apple 5244 × 2950, bannière Google 1024 × 500 ; plus l'icône Google 512 et une `planche.png` par langue. `--langue en` ou `--seulement captures|bannieres|icone` pour refaire une partie.
-5. **Regarder chaque planche** (Read sur l'image, réduite avec `sips -Z` si elle est grande) : texte qui déborde ou se coupe, mot seul en fin de titre, autocollant qui cache l'information importante, contraste. Corriger `visuels.json` et refaire la partie concernée jusqu'à ce que tout soit propre.
-6. Si la marque ne colle pas aux modèles (style très différent), copier `modeles-visuels/` dans le projet et adapter le HTML ; le script accepte les mêmes paramètres.
+   Produces for each language: Apple 6.9" and 6.3" screenshots, Google screenshots, Apple header 5244 × 2950 and 3840 × 1646, Apple search artwork 5244 × 2950, Google feature graphic 1024 × 500; plus the Google 512 icon and one `contact-sheet.png` per language. `--lang en` or `--only screenshots|banners|icon` to redo part of it.
+5. **Look at each contact sheet** (Read the image, shrunk with `sips -Z` if it is large): text that overflows or gets cut, a lone word at the end of a title, a sticker hiding important information, contrast. Fix `visuals.json` and redo the affected part until everything is clean.
+6. If the brand does not fit the templates (very different style), copy `visual-templates/` into the project and adapt the HTML; the script passes the same parameters.
 
-## 5. Vérifier
+## 5. Check
 
 ```bash
-python3 ~/.claude/skills/fiches-stores/scripts/verifier_store.py STORE.md
+python3 ~/.claude/skills/fiches-stores/scripts/check_store.py STORE.md
 ```
 
-Corriger jusqu'à « Tout est dans les limites ». Puis relire comme un examinateur : chaque promesse existe-t-elle dans l'app ? Chaque réponse de confidentialité correspond-elle au code et à la politique ?
+Fix until "Everything is within limits." Then reread as a reviewer would: does every promise exist in the app? Does every privacy answer match the code and the policy?
 
-## 6. Livrer
+## 6. Deliver
 
-- `STORE.md` (mettre à jour l'existant en gardant ce qui est déjà validé) et `store/` (avec `visuels.json` et les écrans bruts, pour pouvoir tout refaire).
-- Dans le message : les langues couvertes, les fichiers produits, les **choix à valider** (catégorie, âge, nom affiché, captures), les réponses sensibles à relire (âge, confidentialité) et ce qui manque.
-- Ensuite, accompagner l'utilisateur écran par écran dans les consoles : quand il colle une question de formulaire, répondre avec la valeur exacte à choisir et la raison en une ligne, dans la langue de la question.
+- `STORE.md` (update the existing one, keeping what is already validated) and `store/` (with `visuals.json` and the raw screens, so everything can be redone).
+- In the message: the languages covered, the files produced, the **choices to validate** (category, age, display name, screenshots), the sensitive answers to reread (age, privacy) and what is missing.
+- Then walk the user through the consoles screen by screen: when they paste a form question, answer with the exact value to choose and the reason in one line, in the language of the question.
